@@ -4,6 +4,9 @@ import random
 import re
 from datetime import datetime
 from collections import Counter
+from utils import generate_strong_password, suggest_strong_password,check_format,check_password_strength
+    
+
 
 app = Flask(__name__)
 
@@ -17,6 +20,13 @@ def check_password_strength():
 
     # Implement the check_password_strength function here
     # (Copy the function from your backend code)
+    
+    
+    
+    
+    
+    
+
 
     missing_criteria, score = check_password_strength(password, username, birthdate, email)
     total_criteria = 10  # Adding the additional format check

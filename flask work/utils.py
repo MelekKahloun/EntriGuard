@@ -104,33 +104,3 @@ def check_password_strength(password, username, birthdate, email):
     score += 1  # Checking password format adds one to the score
     
     return missing_criteria, score
-
-def main():
-    username = input("Enter your username: ")
-    birthdate = input("Enter your birthdate (YYYY-MM-DD): ")
-    email = input("Enter your email: ")
-    
-    format_errors = check_format(username, birthdate, email)
-    if format_errors:
-        print("Format errors:")
-        for error in format_errors:
-            print(error)
-        return
-   
-    password = input("Enter your password: ")
-   
-    missing_criteria, score = check_password_strength(password, username, birthdate, email)
-    total_criteria = 10  # Adding the additional format check
-   
-    if missing_criteria:
-        print(f"Password missing criteria: {', '.join(missing_criteria)}")
-        suggest_strong_password(username, birthdate, email)
-    else:
-        print("Password meets all criteria")
-   
-    password_score = round((score / total_criteria) * 5, 2)
-    print(f"Password score: {password_score}/5")
-
-if __name__ == "__main__":
-    main()
-
