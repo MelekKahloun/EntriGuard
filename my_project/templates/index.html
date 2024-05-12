@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Password</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zZLn7fONEXu6IWgOqoERiCkF89EYzTJKQ5lZcw7ksOgXvLcoufAxlqPJzAEgjjY" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zZLn7fONEXu6IWgOqoERiCkF89EYzTJKQ5lZcw7ksOgXvLcoufAxlqPJzAEgjjY" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <!-- navbar sections starts  -->
+    <header class="header">
+        <div class="logo">
+            <!-- you can change the logo from here  -->
+            <img src="images\logo.png" alt="logo-navbar" width="150" height="50">
+
+        </div>
+
+        <nav class="navbar">
+            <a href="#home">Home</a>
+            <a href="#security_tips">Security Tips</a>
+            <a href="#about">About Us</a>
+            <a href="#check_password" class="btn">Check Password</a>
+        </nav>
+
+
+        <div class="fas fa-bars" id="menu-btn"></div>
+    </header>
+    <!-- navbar sections starts  -->
+
+   
+    <!-- home section stars  -->
+
+    <section class="home" id="home">
+        <div class="content">
+            <h1>EntriGuard</h1>
+            <p>Online tool to check password strength and security</p>
+
+            <a href="#check_password" class="home-btn">Check Password</a>
+        </div>
+
+
+        <div class="image">
+            <img src="images/security.png" alt="PC">
+        </div>
+    </section>
+
+    <!-- home section ends -->
+
+
+
+
+
+
+
+
+     <!-- Check password section starts  -->
+
+     <section class="download" id="check_password">
+        <div class="heading">
+            <h1>Check Password</h1>
+            <p>You find bellow the security standards we follow for optimized results</p>
+        </div>
+
+        
+
+ <div class="container">
+        <h1>Password Strength Checker</h1>
+        <form id="passwordForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="birthdate">Birthdate (YYYY-MM-DD):</label>
+            <input type="text" id="birthdate" name="birthdate" pattern="\d{4}-\d{2}-\d{2}" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="button" onclick="checkPassword()">Check Password</button>
+        </form>
+        <div id="passwordStrength"></div>
+    </div>
+
+    <script>
+        function checkPassword() {
+            var username = document.getElementById('username').value;
+            var birthdate = document.getElementById('birthdate').value;
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+
+            fetch('/check_password_strength', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    birthdate: birthdate,
+                    email: email,
+                    password: password
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                var passwordStrength = document.getElementById('passwordStrength');
+                if (data.weak) {
+                    passwordStrength.innerHTML = '<p>Password missing criteria: ' + data.missingCriteria.join(", ") + '</p>';
+                    passwordStrength.innerHTML += '<p>Suggested strong password: ' + data.suggestedPassword + '</p>';
+                } else {
+                    passwordStrength.innerHTML = '<p>Password meets all criteria</p>';
+                }
+                passwordStrength.innerHTML += '<p>Password score: ' + data.score + '/5</p>';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+    </section>
+    <!-- check password section ends -->
+
+
+
+
+
+
+
+
+
+
+
+    <!-- About Us section starts  -->
+
+    <section class="features" id="about">
+        <div class="heading">
+            <h1>About Us</h1>
+            <p>Our aim is to make it quick and easy for you to check the strength of your password and to stay secure</p>
+        </div>
+
+
+        <div class="row">
+            <!-- Image to change -->
+            <div class="image">
+                <img src="images/entriguard.png" alt="entriguard" width="200" height="400">
+            </div>
+
+
+            <div class="content">
+                <h1>Your security in one click</h1>
+                <p>Tool for checking password strength</p>
+                <a href="#check_password" class="all-btn">Check Password</a>
+            </div>
+
+  
+    </section>
+    <!-- About Us sectin ends -->
+
+
+    <!-- Security tips section starts  -->
+
+    <section class="download" id="security_tips">
+        <div class="heading">
+            <h1>Security Tips</h1>
+            <p>You find bellow the security standards we follow for optimized results</p>
+        </div>
+
+        <div class="box-container">
+            <div class="box">
+                <img src="images/logo-chrome.svg" alt="logo-chrome">
+
+                <h3>Add to Chrome</h3>
+                <p>Minimum Version 63</p>
+                <a href="#" class="all-btn">install</a>
+            </div>
+
+            <div class="box">
+                <img src="images/logo-firefox.svg" alt="logo-firefox">
+
+                <h3>Add to Firefox</h3>
+                <p>Minimum Version 55</p>
+                <a href="#" class="all-btn">install</a>
+            </div>
+
+            <div class="box">
+                <img src="images/logo-opera.svg" alt="logo-opera">
+
+                <h3>Add to Opera</h3>
+                <p>Minimum Version 46</p>
+                <a href="#" class="all-btn">install</a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Security tips section ends -->
+
+
+
+    <!-- footer section starts  -->
+
+   <section class="footer" id="footer">
+       <div class="box-container">
+           <div class="box">
+               <h3>quick links</h3>
+               <a href="#"><i class="fas fa-chevron-right"></i>home</a>
+               <a href="#"><i class="fas fa-chevron-right"></i>Security Tips</a>
+               <a href="#"><i class="fas fa-chevron-right"></i>About US</a>
+            </div>
+            
+            
+            <div class="box">
+                <h3>our services</h3>
+                <a href="#"><i class="fas fa-chevron-right"></i>bookmark extension</a>
+                <a href="#"><i class="fas fa-chevron-right"></i>chrome themes</a>
+                <a href="#"><i class="fas fa-chevron-right"></i>firefox themes</a>
+                <a href="#"><i class="fas fa-chevron-right"></i>screen recorder extension</a>
+                <a href="#"><i class="fas fa-chevron-right"></i>screen shot extension</a>
+           </div>
+
+           <div class="box">
+               <h3>contact info</h3>
+               <a href="#"><i class="fas fa-phone"></i>+123-456-789</a>
+               <a href="#"><i class="fas fa-phone"></i>+111-222-3333</a>
+               <a href="#"><i class="fas fa-envelope"></i>company@example.com</a>
+               <a href="#"><i class="fas fa-envelope"></i>company@example.com</a>
+               <a href="#"><i class="fas fa-map-marker-alt"></i>Mumbai, india - 12345</a>
+           </div>
+
+           <div class="box">
+               <h3>follow us</h3>
+               <a href="#"><i class="fab fa-facebook-f"></i>facebook</a>
+               <a href="#"><i class="fab fa-twitter"></i>facebook</a>
+               <a href="#"><i class="fab fa-instagram"></i>instagram</a>
+               <a href="#"><i class="fab fa-linkedin"></i>linkedin</a>
+               <a href="#"><i class="fab fa-pinterest"></i>pinterest</a>
+           </div>
+       </div>
+
+
+       <div class="credit">created by
+           <a href="https://www.youtube.com/channel/UCK5YMqyy_fjAtwgu9hjxXJg" target="_blank"><span>Pranav Raj</span> | all rights reserved</a>
+       </div>
+   </section>
+
+    <!-- footer section ends -->
+
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
