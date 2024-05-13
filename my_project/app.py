@@ -3,15 +3,21 @@ import string
 import random
 import re
 from collections import Counter
+from datetime import datetime  
 
-app = Flask(__name__)
 
-# Sample data to simulate articles
+app = Flask(__name__, static_url_path='/static')
 
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+
+
+
+
 
 
 @app.route('/check_password_strength', methods=['POST'])
@@ -23,15 +29,28 @@ def check_password_strength_route():
     email = data['email']
 
 
-    missing_criteria, score = check_password_strength(password, username, birthdate, email)
+    format_errors = check_format(username, birthdate, email)
+    if format_errors:
+        return jsonify({'weak': True, 'missingCriteria': format_errors, 'suggestedPassword': suggest_strong_password(username, birthdate, email), 'score': 0})
+
+
+    missing_criteria, score, password_found_in_common = check_password_strength(password, username, birthdate, email)
+
+
     total_criteria = 10  # Adding the additional format check
 
 
     if missing_criteria:
         suggested_password = suggest_strong_password(username, birthdate, email)
-        return jsonify({'weak': True, 'missingCriteria': missing_criteria, 'suggestedPassword': suggested_password, 'score': score})
+        return jsonify({'weak': True, 'missingCriteria': missing_criteria, 'suggestedPassword': suggested_password, 'score': score, 'passwordFoundInCommon': password_found_in_common})
     else:
-        return jsonify({'weak': False, 'missingCriteria': [], 'suggestedPassword': '', 'score': score})
+        return jsonify({'weak': False, 'missingCriteria': [], 'suggestedPassword': '', 'score': score, 'passwordFoundInCommon': password_found_in_common})
+
+
+
+
+
+
 
 
 def suggest_strong_password(username, birthdate, email):
@@ -53,6 +72,20 @@ def suggest_strong_password(username, birthdate, email):
             return password
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def check_password_strength(password, username, birthdate, email):
     MIN_LENGTH = 8
     SPECIAL_CHARS = set(string.punctuation)
@@ -61,8 +94,9 @@ def check_password_strength(password, username, birthdate, email):
         common = f.read().splitlines()
    
     if password in common:
-        print("Password was found in a common list. Score: 0 / 7")
-        exit()
+        password_found_in_common = True
+    else:
+        password_found_in_common = False
    
     missing_criteria = []
     score = 0
@@ -112,7 +146,68 @@ def check_password_strength(password, username, birthdate, email):
    
     score += 1  # Checking password format adds one to the score
    
-    return missing_criteria, score
+    if password_found_in_common:
+        score -= 2  # Subtract 2 from score if password is found in common
+   
+    return missing_criteria, score, password_found_in_common
+
+
+def check_format(username, birthdate, email):
+    errors = []
+
+
+
+
+
+
+
+
+    # Check username format (alphanumeric and underscores)
+    if not re.match(r"^[a-zA-Z0-9_]+$", username):
+        errors.append("Username must be alphanumeric and underscores only")
+
+
+
+
+
+
+
+
+    # Check birthdate format (YYYY-MM-DD) and validity
+    try:
+        datetime.strptime(birthdate, "%Y-%m-%d")
+        # Additional check for valid date (e.g., not February 30th)
+        datetime.fromisoformat(birthdate)  # Raises an error for invalid dates
+    except ValueError:
+        errors.append("Birthdate must be in YYYY-MM-DD format and a valid date")
+
+
+
+
+
+
+
+
+    # Check email format (basic validation, consider a more robust library)
+    if "@" not in email or "." not in email.split("@")[-1]:
+        errors.append("Invalid email format")
+
+
+
+
+
+
+
+
+    return errors
+
+
+
+
+
+
+
+
 
 
 

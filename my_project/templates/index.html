@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
+
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,16 +14,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zZLn7fONEXu6IWgOqoERiCkF89EYzTJKQ5lZcw7ksOgXvLcoufAxlqPJzAEgjjY" crossorigin="anonymous">
 
+
+
+
 </head>
+
+
+
 
 <body>
     <!-- navbar sections starts  -->
     <header class="header">
         <div class="logo">
             <!-- you can change the logo from here  -->
-            <img src="images\logo.png" alt="logo-navbar" width="150" height="50">
+            <img src="../static/images/logo.png" alt="logo-navbar" width="150" height="50">
+
+
+
 
         </div>
+
+
+
 
         <nav class="navbar">
             <a href="#home">Home</a>
@@ -30,26 +45,50 @@
         </nav>
 
 
+
+
+
+
+
+
         <div class="fas fa-bars" id="menu-btn"></div>
     </header>
     <!-- navbar sections starts  -->
 
+
+
+
    
     <!-- home section stars  -->
+
+
+
 
     <section class="home" id="home">
         <div class="content">
             <h1>EntriGuard</h1>
             <p>Online tool to check password strength and security</p>
 
+
+
+
             <a href="#check_password" class="home-btn">Check Password</a>
         </div>
 
 
+
+
+
+
+
+
         <div class="image">
-            <img src="images/security.png" alt="PC">
+            <img src="../static/images/security.png" alt="PC">
         </div>
     </section>
+
+
+
 
     <!-- home section ends -->
 
@@ -60,7 +99,34 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
      <!-- Check password section starts  -->
+
+
+
 
      <section class="download" id="check_password">
         <div class="heading">
@@ -68,7 +134,13 @@
             <p>You find bellow the security standards we follow for optimized results</p>
         </div>
 
-        
+
+
+
+       
+
+
+
 
  <div class="container">
         <h1>Password Strength Checker</h1>
@@ -86,12 +158,18 @@
         <div id="passwordStrength"></div>
     </div>
 
+
+
+
     <script>
         function checkPassword() {
             var username = document.getElementById('username').value;
             var birthdate = document.getElementById('birthdate').value;
             var email = document.getElementById('email').value;
             var password = document.getElementById('password').value;
+
+
+
 
             fetch('/check_password_strength', {
                 method: 'POST',
@@ -111,10 +189,13 @@
                 if (data.weak) {
                     passwordStrength.innerHTML = '<p>Password missing criteria: ' + data.missingCriteria.join(", ") + '</p>';
                     passwordStrength.innerHTML += '<p>Suggested strong password: ' + data.suggestedPassword + '</p>';
+                    if (data.passwordFoundInCommon) {
+                        passwordStrength.innerHTML += '<p>Password was found in a common list</p>';
+                    }
                 } else {
                     passwordStrength.innerHTML = '<p>Password meets all criteria</p>';
                 }
-                passwordStrength.innerHTML += '<p>Password score: ' + data.score + '/5</p>';
+                passwordStrength.innerHTML += '<p>Password score: ' + data.score + '/7</p>';
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -134,7 +215,43 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- About Us section starts  -->
+
+
+
 
     <section class="features" id="about">
         <div class="heading">
@@ -143,11 +260,23 @@
         </div>
 
 
+
+
+
+
+
+
         <div class="row">
             <!-- Image to change -->
             <div class="image">
-                <img src="images/entriguard.png" alt="entriguard" width="200" height="400">
+                <img src="../static/images/entriguard.png" alt="entriguard" width="200" height="400">
             </div>
+
+
+
+
+
+
 
 
             <div class="content">
@@ -156,12 +285,24 @@
                 <a href="#check_password" class="all-btn">Check Password</a>
             </div>
 
-  
+
+
+
+ 
     </section>
     <!-- About Us sectin ends -->
 
 
+
+
+
+
+
+
     <!-- Security tips section starts  -->
+
+
+
 
     <section class="download" id="security_tips">
         <div class="heading">
@@ -169,25 +310,43 @@
             <p>You find bellow the security standards we follow for optimized results</p>
         </div>
 
+
+
+
         <div class="box-container">
             <div class="box">
-                <img src="images/logo-chrome.svg" alt="logo-chrome">
+                <img src="../static/images/logo-chrome.svg" alt="logo-chrome">
+
+
+
 
                 <h3>Add to Chrome</h3>
                 <p>Minimum Version 63</p>
                 <a href="#" class="all-btn">install</a>
             </div>
 
+
+
+
             <div class="box">
-                <img src="images/logo-firefox.svg" alt="logo-firefox">
+                <img src="../static/images/logo-firefox.svg" alt="logo-firefox">
+
+
+
 
                 <h3>Add to Firefox</h3>
                 <p>Minimum Version 55</p>
                 <a href="#" class="all-btn">install</a>
             </div>
 
+
+
+
             <div class="box">
-                <img src="images/logo-opera.svg" alt="logo-opera">
+                <img src="../static/images/logo-opera.svg" alt="logo-opera">
+
+
+
 
                 <h3>Add to Opera</h3>
                 <p>Minimum Version 46</p>
@@ -197,11 +356,29 @@
     </section>
 
 
+
+
+
+
+
+
     <!-- Security tips section ends -->
 
 
 
+
+
+
+
+
+
+
+
+
     <!-- footer section starts  -->
+
+
+
 
    <section class="footer" id="footer">
        <div class="box-container">
@@ -211,8 +388,8 @@
                <a href="#"><i class="fas fa-chevron-right"></i>Security Tips</a>
                <a href="#"><i class="fas fa-chevron-right"></i>About US</a>
             </div>
-            
-            
+           
+           
             <div class="box">
                 <h3>our services</h3>
                 <a href="#"><i class="fas fa-chevron-right"></i>bookmark extension</a>
@@ -222,6 +399,9 @@
                 <a href="#"><i class="fas fa-chevron-right"></i>screen shot extension</a>
            </div>
 
+
+
+
            <div class="box">
                <h3>contact info</h3>
                <a href="#"><i class="fas fa-phone"></i>+123-456-789</a>
@@ -230,6 +410,9 @@
                <a href="#"><i class="fas fa-envelope"></i>company@example.com</a>
                <a href="#"><i class="fas fa-map-marker-alt"></i>Mumbai, india - 12345</a>
            </div>
+
+
+
 
            <div class="box">
                <h3>follow us</h3>
@@ -242,15 +425,37 @@
        </div>
 
 
+
+
+
+
+
+
        <div class="credit">created by
            <a href="https://www.youtube.com/channel/UCK5YMqyy_fjAtwgu9hjxXJg" target="_blank"><span>Pranav Raj</span> | all rights reserved</a>
        </div>
    </section>
 
+
+
+
     <!-- footer section ends -->
+
+
+
+
+
+
 
 
     <script src="js/main.js"></script>
 </body>
 
+
+
+
 </html>
+
+
+
+

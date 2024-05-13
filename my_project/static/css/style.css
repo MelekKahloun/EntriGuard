@@ -458,4 +458,56 @@ body {
     margin-top: 10px;
     font-weight: bold;
   }
-  
+  .format-feedback {
+    font-size: 14px;
+    color: red;
+    display: none;
+}
+
+.correct {
+    background-color: lightgreen !important;
+}
+
+.incorrect {
+    background-color: salmon !important;
+}
+
+#password-suggestion {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+#password-strength {
+    margin-top: 10px;
+    font-weight: bold;
+}
+.container {
+    max-width: 400px;
+    margin: 50px auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.feedback {
+    color: red;
+    font-size: 14px;
+}
