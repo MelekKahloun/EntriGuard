@@ -6,12 +6,24 @@ from collections import Counter
 from datetime import datetime  
 
 
+
+
 app = Flask(__name__, static_url_path='/static')
+
+
 
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+
+
+
+
+
+
 
 
 
@@ -29,22 +41,38 @@ def check_password_strength_route():
     email = data['email']
 
 
+
+
     format_errors = check_format(username, birthdate, email)
     if format_errors:
         return jsonify({'weak': True, 'missingCriteria': format_errors, 'suggestedPassword': suggest_strong_password(username, birthdate, email), 'score': 0})
 
 
+
+
     missing_criteria, score, password_found_in_common = check_password_strength(password, username, birthdate, email)
+    cracking_time = estimate_cracking_time(password)
 
 
-    total_criteria = 10  # Adding the additional format check
+
+    total_criteria = 7  # Adding the additional format check
+
+
 
 
     if missing_criteria:
         suggested_password = suggest_strong_password(username, birthdate, email)
-        return jsonify({'weak': True, 'missingCriteria': missing_criteria, 'suggestedPassword': suggested_password, 'score': score, 'passwordFoundInCommon': password_found_in_common})
+        return jsonify({'weak': True, 'missingCriteria': missing_criteria, 'suggestedPassword': suggested_password, 'score': score, 'passwordFoundInCommon': password_found_in_common, 'crackingTime': cracking_time})
     else:
-        return jsonify({'weak': False, 'missingCriteria': [], 'suggestedPassword': '', 'score': score, 'passwordFoundInCommon': password_found_in_common})
+        return jsonify({'weak': False, 'missingCriteria': [], 'suggestedPassword': '', 'score': score, 'passwordFoundInCommon': password_found_in_common, 'crackingTime': cracking_time})
+
+
+
+
+
+
+
+
 
 
 
@@ -70,6 +98,22 @@ def suggest_strong_password(username, birthdate, email):
             not any(part in password for part in re.findall(r"\d+", birthdate))
         ):
             return password
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -152,25 +196,35 @@ def check_password_strength(password, username, birthdate, email):
     return missing_criteria, score, password_found_in_common
 
 
+def estimate_cracking_time(password):
+    # This is a simplified estimation. In a real application, use a more accurate method.
+    complexity = len(set(password))
+    length = len(password)
+    possible_combinations = complexity ** length
+    cracking_speed = 1e9  # assume 1 billion guesses per second
+    time_to_crack_seconds = possible_combinations / cracking_speed
+
+    if time_to_crack_seconds < 1:
+        return "less than 1 second"
+    elif time_to_crack_seconds < 60:
+        return f"{int(time_to_crack_seconds)} seconds"
+    elif time_to_crack_seconds < 3600:
+        return f"{int(time_to_crack_seconds // 60)} minutes"
+    elif time_to_crack_seconds < 86400:
+        return f"{int(time_to_crack_seconds // 3600)} hours"
+    elif time_to_crack_seconds < 31536000:
+        return f"{int(time_to_crack_seconds // 86400)} days"
+    else:
+        return f"{int(time_to_crack_seconds // 31536000)} years"
+
+
 def check_format(username, birthdate, email):
     errors = []
-
-
-
-
-
-
 
 
     # Check username format (alphanumeric and underscores)
     if not re.match(r"^[a-zA-Z0-9_]+$", username):
         errors.append("Username must be alphanumeric and underscores only")
-
-
-
-
-
-
 
 
     # Check birthdate format (YYYY-MM-DD) and validity
@@ -182,34 +236,10 @@ def check_format(username, birthdate, email):
         errors.append("Birthdate must be in YYYY-MM-DD format and a valid date")
 
 
-
-
-
-
-
-
     # Check email format (basic validation, consider a more robust library)
     if "@" not in email or "." not in email.split("@")[-1]:
         errors.append("Invalid email format")
-
-
-
-
-
-
-
-
     return errors
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -218,3 +248,5 @@ def check_format(username, birthdate, email):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+

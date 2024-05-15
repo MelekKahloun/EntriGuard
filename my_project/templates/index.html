@@ -147,19 +147,28 @@
         <form id="passwordForm">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
+            <p id="usernameError" class="error"></p>
             <label for="birthdate">Birthdate (YYYY-MM-DD):</label>
+            <p id="birthdateError" class="error"></p>
             <input type="text" id="birthdate" name="birthdate" pattern="\d{4}-\d{2}-\d{2}" required>
             <label for="email">Email:</label>
+            <p id="emailError" class="error"></p>
             <input type="email" id="email" name="email" required>
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <button type="button" onclick="checkPassword()">Check Password</button>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <div id="popup">
+                <p id="popupText"></p>
+            </div>
+            
+            <button type="submit"  onclick="checkPassword()">Check Password</button>
         </form>
         <div id="passwordStrength"></div>
+        <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+
     </div>
 
-
-
+    </section>
+    <!-- check password section ends -->
 
     <script>
         function checkPassword() {
@@ -202,10 +211,6 @@
             });
         }
     </script>
-    </section>
-    <!-- check password section ends -->
-
-
 
 
 
